@@ -2,6 +2,7 @@ package uploader
 
 import (
 	"context"
+
 	"github.com/lampnick/doctron/conf"
 )
 
@@ -13,6 +14,9 @@ func NewDoctronUploader(ctx context.Context, doctronType string, uc UploadConfig
 		return fac.createDoctronUploader(ctx, uc)
 	case conf.DoctronUploaderMock:
 		fac := &(mockFactory{})
+		return fac.createDoctronUploader(ctx, uc)
+	case conf.DoctronUploaderTencentOss:
+		fac := &tencentFactory{}
 		return fac.createDoctronUploader(ctx, uc)
 	default:
 		return nil
@@ -40,6 +44,18 @@ type mockFactory struct {
 
 func (ins *mockFactory) createDoctronUploader(ctx context.Context, uc UploadConfig) DoctronUploaderI {
 	return &MockUploader{
+		DoctronUploader: DoctronUploader{
+			ctx:          ctx,
+			UploadConfig: uc,
+		},
+	}
+}
+
+type tencentFactory struct {
+}
+
+func (ins *tencentFactory) createDoctronUploader(ctx context.Context, uc UploadConfig) DoctronUploaderI {
+	return &TencentOssUploader{
 		DoctronUploader: DoctronUploader{
 			ctx:          ctx,
 			UploadConfig: uc,

@@ -2,9 +2,10 @@ package uploader
 
 import (
 	"errors"
+	"time"
+
 	"github.com/lampnick/doctron/conf"
 	"github.com/lampnick/doctron/pkg/alioss"
-	"time"
 )
 
 type AliOssUploader struct {
@@ -13,9 +14,9 @@ type AliOssUploader struct {
 
 var ErrNoNeedToUpload = errors.New("no need to upload")
 
-func (ins *AliOssUploader) Upload() (url string, err error) {
+func (ins *AliOssUploader) Upload() (*UploadeResult, error) {
 	if ins.Key == "" {
-		return "", ErrNoNeedToUpload
+		return nil, ErrNoNeedToUpload
 	}
 	start := time.Now()
 	defer func() {
@@ -23,13 +24,13 @@ func (ins *AliOssUploader) Upload() (url string, err error) {
 	}()
 	helper, err := alioss.NewOssHelper(conf.OssConfig)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	uploadUrl, err := helper.Upload(ins.Key, ins.Stream)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return uploadUrl, nil
+	return &UploadeResult{URL: uploadUrl}, nil
 }
 
 func (ins *AliOssUploader) GetUploadElapsed() time.Duration {

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"gopkg.in/go-playground/validator.v9"
 )
@@ -14,7 +15,7 @@ type OssConfig struct {
 	AccessKeyId         string `validate:"required"`
 	AccessKeySecret     string `validate:"required"`
 	BucketName          string `validate:"required"`
-	PrivateServerDomain string `validate:"required"`
+	PrivateServerDomain string
 }
 type OssHelper struct {
 	client *oss.Client

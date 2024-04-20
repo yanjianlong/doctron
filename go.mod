@@ -7,8 +7,8 @@ require (
 	github.com/ajg/form v1.5.1 // indirect
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.4+incompatible
 	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
-	github.com/chromedp/cdproto v0.0.0-20200116234248-4da64dd111ac
-	github.com/chromedp/chromedp v0.5.3
+	github.com/chromedp/cdproto v0.0.0-20240328024531-fe04f09ede24
+	github.com/chromedp/chromedp v0.9.5
 	github.com/fasthttp-contrib/websocket v0.0.0-20160511215533-1f3b11f56072 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
@@ -27,6 +27,7 @@ require (
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.7.1
+	github.com/tencentyun/cos-go-sdk-v5 v0.7.47 // indirect
 	github.com/valyala/fasthttp v1.15.1 // indirect
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	github.com/yalp/jsonpath v0.0.0-20180802001716-5cc68e5049a0 // indirect

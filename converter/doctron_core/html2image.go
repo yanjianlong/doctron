@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/chromedp/cdproto/emulation"
+	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/cdproto/page"
 	"github.com/chromedp/chromedp"
 )
@@ -83,30 +84,37 @@ func (ins *html2image) Convert() ([]byte, error) {
 	if !ok {
 		return nil, errors.New("wrong html2image params given")
 	}
+	// options := []chromedp.ExecAllocatorOption{
+	// 	chromedp.UserAgent(userAgent),
+	// }
+	// allocCtx, cancel := chromedp.NewExecAllocator(ins.ctx, options...)
 	ctx, cancel := chromedp.NewContext(ins.ctx)
 	defer cancel()
-
+	headers := map[string]interface{}{
+		"User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1",
+	}
+	// hbs, _ := json.Marshal(headers)
 	if err := chromedp.Run(ctx,
+		network.SetExtraHTTPHeaders(network.Headers(headers)),
 		chromedp.Navigate(ins.cc.Url),
 		chromedp.Sleep(time.Duration(params.WaitingTime)*time.Millisecond),
 		chromedp.ActionFunc(func(ctx context.Context) error {
-
-			if !params.CustomClip {
-				// get layout metrics
-				_, _, contentSize, err := page.GetLayoutMetrics().Do(ctx)
-				if err != nil {
-					return err
-				}
-				params.Clip.X = contentSize.X
-				params.Clip.Y = contentSize.Y
-				params.Clip.Width = contentSize.Width
-				params.Clip.Height = contentSize.Height
-			}
+			// if !params.CustomClip {
+			// 	// get layout metrics
+			// 	_, _, contentSize, err := page.GetLayoutMetrics().Do(ctx)
+			// 	if err != nil {
+			// 		return err
+			// 	}
+			// 	params.Clip.X = contentSize.X
+			// 	params.Clip.Y = contentSize.Y
+			// 	params.Clip.Width = contentSize.Width
+			// 	params.Clip.Height = contentSize.Height
+			// }
 
 			//width, height := int64(math.Ceil(contentSize.Width)), int64(math.Ceil(contentSize.Height))
 
 			// force viewport emulation
-			err := emulation.SetDeviceMetricsOverride(int64(params.Clip.Width), int64(params.Clip.Height), 1, false).
+			err := emulation.SetDeviceMetricsOverride(int64(params.Clip.Width), int64(params.Clip.Height), 1, true).
 				WithScreenOrientation(&emulation.ScreenOrientation{
 					Type:  emulation.OrientationTypePortraitPrimary,
 					Angle: 0,
@@ -115,7 +123,6 @@ func (ins *html2image) Convert() ([]byte, error) {
 			if err != nil {
 				return err
 			}
-
 			// capture screenshot
 			ins.buf, err = params.Do(ctx)
 			return err

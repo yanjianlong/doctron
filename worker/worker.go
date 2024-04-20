@@ -2,6 +2,7 @@ package worker
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/Jeffail/tunny"
 	"github.com/kataras/iris/v12"
@@ -24,7 +25,7 @@ func log(ctx iris.Context, format string, args ...interface{}) {
 
 type DoctronOutputDTO struct {
 	Buf []byte
-	Url string
+	Url interface{}
 	Err error
 }
 
@@ -46,6 +47,7 @@ func DoctronHandler(params interface{}) interface{} {
 	}
 
 	doctronOutputDTO.Buf = convertBytes
+	fmt.Println("DoctronHandler", doctronConfig.UploadKey)
 	if doctronConfig.UploadKey == "" {
 		doctronOutputDTO.Err = ErrNoNeedToUpload
 		return doctronOutputDTO

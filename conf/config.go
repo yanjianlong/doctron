@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
 	"github.com/lampnick/doctron/pkg/alioss"
 )
 
 const (
-	DoctronUploaderAliOss = "alioss"
-	DoctronUploaderMock   = "mockUploader"
+	DoctronUploaderAliOss     = "alioss"
+	DoctronUploaderTencentOss = "toss"
+	DoctronUploaderMock       = "mockUploader"
 )
 
 var LoadedConfig *Config

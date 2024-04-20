@@ -3,6 +3,7 @@ package controller
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/gorilla/schema"
@@ -87,6 +88,7 @@ func initHtml2ImageConfig(ctx iris.Context) (converter.DoctronConfig, error) {
 	result.Url = requestDTO.Url
 	result.UploadKey = requestDTO.UploadKey
 	result.Params = convertToHtml2ImageParams(requestDTO)
+	fmt.Println("initHtml2ImageConfig", result)
 	return result, nil
 }
 
